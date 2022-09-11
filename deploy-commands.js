@@ -3,8 +3,8 @@ const { REST } = require('@discordjs/rest');
 const { clientId, guildId, token } = require('./config.json');
 
 const commands = [
-  new SlashCommandBuilder().setName('coo').setDescription('Replies with pong!'),
-  new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
+  new SlashCommandBuilder().setName('report').setDescription('lets you report players that arent that squishee'),
+  new SlashCommandBuilder().setName('cookie').setDescription('gives you a cookie'),
   new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
 ]
   .map(command => command.toJSON());

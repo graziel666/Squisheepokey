@@ -7,22 +7,24 @@ const wait = require('node:timers/promises').setTimeout;
 const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+
 //checking if all run
 client.once('ready', () => {
 
-    console.log('Ready!');
+  console.log('Ready!');
 });
 //the commands for the server
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === 'coo') {
+  if (interaction.commandName === 'report') {
 
     // Create the modal
     const modal = new ModalBuilder()
       .setCustomId('myModal')
-      .setTitle('My Modal');
+      .setTitle('SquisheePokey');
 
     // Add components to modal
 
@@ -52,37 +54,51 @@ client.on('interactionCreate', async interaction => {
     await interaction.showModal(modal);
 
   }
+  if (interaction.commandName === 'cookie') {
 
+    const raccnom = client.emojis.cache.find(emoji => emoji.name === "cookienom");
+
+    await interaction.reply('cookie coming in 3...');
+    await wait(2000);
+    await interaction.editReply('2...');
+    await wait(2000);
+    await interaction.editReply('1...');
+    await wait(2000);
+    await interaction.editReply(':cookie:');
+    await wait(2000);
+    await interaction.editReply(`${raccnom}`);
+
+  }
 });
 
 client.on('interactionCreate', interaction => {
-	if (interaction.type !== InteractionType.ModalSubmit) return;
+  if (interaction.type !== InteractionType.ModalSubmit) return;
 
-        //getting user
-        const userID = interaction.user.id;
+  //getting user
+  const userID = interaction.user.id;
 
-	// Get the data entered by the user
-	const User_to_report = interaction.fields.getTextInputValue('Report');
-	const Reason_of_report = interaction.fields.getTextInputValue('Reason');
-//	console.log({ User_to_report, Reason_of_report });
+  // Get the data entered by the user
+  const User_to_report = interaction.fields.getTextInputValue('Report');
+  const Reason_of_report = interaction.fields.getTextInputValue('Reason');
+  //	console.log({ User_to_report, Reason_of_report });
 
-        //building message
+  //building message
 
-        //leaving this here in case we wanna make it 100% annonymous, even for us
-        // const reported_user = `User: ${User_to_report}`;
+  //leaving this here in case we wanna make it 100% annonymous, even for us
+  // const reported_user = `User: ${User_to_report}`;
 
-        //with name
-        const reported_user = `<@${userID}> has reported ${User_to_report}`;
+  //with name
+  const reported_user = `<@${userID}> has reported ${User_to_report}`;
 
-        const report_reason = `Reason: ${Reason_of_report}`;
+  const report_reason = `Reason: ${Reason_of_report}`;
 
-        const channel = client.channels.cache.get('1018223694922907808');
-        channel.send(reported_user);
-        channel.send(report_reason);
+  const channel = client.channels.cache.get('1018223694922907808');
+  channel.send(reported_user);
+  channel.send(report_reason);
 
-        if (interaction.customId === 'myModal') {
-    	     interaction.reply({ content: 'Your submission was received successfully!' , ephemeral: true});
-	}
+  if (interaction.customId === 'myModal') {
+    interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
+  }
 });
 
 client.login(token);
