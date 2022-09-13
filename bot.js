@@ -6,15 +6,22 @@ const wait = require('node:timers/promises').setTimeout;
 
 const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 
+const { ActivityType } = require('discord.js');
+
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 
 
 //checking if all run
 client.once('ready', () => {
+	client.user.setActivity('Alaric Cookies Stash', { type: ActivityType.Watching });
 
   console.log('Ready!');
 });
 //the commands for the server
+
+
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
@@ -53,10 +60,41 @@ client.on('interactionCreate', async interaction => {
     // Show the modal to the user
     await interaction.showModal(modal);
 
+
+    client.on('interactionCreate', interaction => {
+        if (interaction.type !== InteractionType.ModalSubmit) return;
+
+        //getting user
+        const userID = interaction.user.id;
+
+        // Get the data entered by the user
+        const User_to_report = interaction.fields.getTextInputValue('Report');
+        const Reason_of_report = interaction.fields.getTextInputValue('Reason');
+        //console.log({ User_to_report, Reason_of_report });
+
+        //building message
+
+        //leaving this here in case we wanna make it 100% annonymous, even for us
+        // const reported_user = `User: ${User_to_report}`;
+
+        //with name
+        const reported_user = `<@${userID}> has reported ${User_to_report}`;
+
+        const report_reason = `Reason: ${Reason_of_report}`;
+//testy-test 1018573624606736445
+//squishee 1018673990786613358
+        const channel = client.channels.cache.get('1018573624606736445');
+        channel.send(reported_user);
+        channel.send(report_reason);
+
+        if (interaction.customId === 'myModal') {
+            interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
+        }
+    });
   }
   if (interaction.commandName === 'cookie') {
 
-    const raccnom = client.emojis.cache.find(emoji => emoji.name === "cookienom");
+    const raccnom = client.emojis.cache.find(emoji => emoji.name === "cookienom03");
 
     await interaction.reply('cookie coming in 3...');
     await wait(2000);
@@ -71,34 +109,6 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.on('interactionCreate', interaction => {
-  if (interaction.type !== InteractionType.ModalSubmit) return;
 
-  //getting user
-  const userID = interaction.user.id;
-
-  // Get the data entered by the user
-  const User_to_report = interaction.fields.getTextInputValue('Report');
-  const Reason_of_report = interaction.fields.getTextInputValue('Reason');
-  //	console.log({ User_to_report, Reason_of_report });
-
-  //building message
-
-  //leaving this here in case we wanna make it 100% annonymous, even for us
-  // const reported_user = `User: ${User_to_report}`;
-
-  //with name
-  const reported_user = `<@${userID}> has reported ${User_to_report}`;
-
-  const report_reason = `Reason: ${Reason_of_report}`;
-
-  const channel = client.channels.cache.get('1018223694922907808');
-  channel.send(reported_user);
-  channel.send(report_reason);
-
-  if (interaction.customId === 'myModal') {
-    interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
-  }
-});
 
 client.login(token);
