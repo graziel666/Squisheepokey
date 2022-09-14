@@ -12,10 +12,11 @@ const { ActivityType } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 
-
 //checking if all run
 client.once('ready', () => {
-	client.user.setActivity('Alaric Cookies Stash', { type: ActivityType.Watching });
+
+  client.user.setActivity('Alaric Cookies Stash', { type: ActivityType.Watching });
+
 
   console.log('Ready!');
 });
@@ -26,7 +27,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
-    if (interaction.member.roles.cache.has('547895434316611653')){ return;}
+  // if (interaction.member.roles.cache.has('1012888938056261662')) { return; }
 
   if (interaction.commandName === 'report') {
 
@@ -69,31 +70,42 @@ client.on('interactionCreate', async interaction => {
 
   if (interaction.commandName === 'gameid') {
 
+    if (interaction.channel.id === '1012887699629277254') {
 
-    // Create the modal
-    const idmodal = new ModalBuilder()
-      .setCustomId('idModal')
-      .setTitle('SquisheePokey');
 
-    // Add components to modal
 
-    // Create the text input components
-    const userId = new TextInputBuilder()
-      .setCustomId('UserId')
-      // The label is the prompt the user sees for this input
-      .setLabel("what's your in game id? example: Sverra.8026")
-      // Short means only a single line of text
-      .setStyle(TextInputStyle.Short);
+      // Create the modal
+      const idmodal = new ModalBuilder()
+        .setCustomId('idModal')
+        .setTitle('SquisheePokey');
 
-    // An action row only holds one text input,
-    // so you need one action row per text input.
-    const firstActionRow = new ActionRowBuilder().addComponents(userId);
+      // Add components to modal
 
-    // Add inputs to the modal
-    idmodal.addComponents(firstActionRow);
+      // Create the text input components
+      const userId = new TextInputBuilder()
+        .setCustomId('UserId')
+        // The label is the prompt the user sees for this input
+        .setLabel("what's your in game id? example: Sverra.8026")
+        // Short means only a single line of text
+        .setStyle(TextInputStyle.Short);
 
-    // Show the modal to the user
-    await interaction.showModal(idmodal);
+      // An action row only holds one text input,
+      // so you need one action row per text input.
+      const firstActionRow = new ActionRowBuilder().addComponents(userId);
+
+      // Add inputs to the modal
+      idmodal.addComponents(firstActionRow);
+
+      // Show the modal to the user
+      await interaction.showModal(idmodal);
+
+      //end of modal
+
+
+
+    } else return;
+    // await interaction.reply({ content: 'Your cant send that command here', ephemeral: true });
+
 
 
   }
@@ -118,38 +130,37 @@ client.on('interactionCreate', async interaction => {
 client.on('interactionCreate', async interaction => {
   if (interaction.type !== InteractionType.ModalSubmit) return;
 
-
   if (interaction.customId === 'myModal') {
-  //getting user
-  const userID = interaction.user.id;
+    //getting user
+    const userID = interaction.user.id;
 
-  // Get the data entered by the user
-  const User_to_report = interaction.fields.getTextInputValue('Report');
-  const Reason_of_report = interaction.fields.getTextInputValue('Reason');
-  //	console.log({ User_to_report, Reason_of_report });
+    // Get the data entered by the user
+    const User_to_report = interaction.fields.getTextInputValue('Report');
+    const Reason_of_report = interaction.fields.getTextInputValue('Reason');
+    //	console.log({ User_to_report, Reason_of_report });
 
-  //building message
+    //building message
 
-  //leaving this here in case we wanna make it 100% annonymous, even for us
-  // const reported_user = `User: ${User_to_report}`;
+    //leaving this here in case we wanna make it 100% annonymous, even for us
+    // const reported_user = `User: ${User_to_report}`;
 
-  //with name
-  const reported_user = `<@${userID}> has reported ${User_to_report}`;
+    //with name
+    const reported_user = `<@${userID}> has reported ${User_to_report}`;
 
-  const report_reason = `Reason: ${Reason_of_report}`;
+    const report_reason = `Reason: ${Reason_of_report}`;
 
 
     //sneakies 1018223694922907808
     //squishee 1018673990786613358
-  const channel = client.channels.cache.get('1018673990786613358');
-  channel.send(reported_user);
-  channel.send(report_reason);
+    const channel = client.channels.cache.get('1018673990786613358');
+    channel.send(reported_user);
+    channel.send(report_reason);
 
     await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
   }
 
-    if (interaction.customId === 'idModal') {
-     //getting user
+  if (interaction.customId === 'idModal') {
+    //getting user
     const userID = interaction.user.id;
 
     // Get the data entered by the user
@@ -165,19 +176,16 @@ client.on('interactionCreate', async interaction => {
     const channel = client.channels.cache.get('1012897955176521778');
     channel.send(in_game_id);
 
+    //guest role 994276021304045648
+    if (interaction.member.roles.cache.has('994276021304045648')) {
 
-    // if (newMember.roles.cache.some(role => role.name === 'Guest')) {
-    //     const role = interaction.options.getRole('Member');
-    //     //const member = interaction.options.getMember('target');
-    //     newMember.roles.add(role);
 
-    // }
-    if (interaction.member.roles.cache.some(r => r.name == "Guest")){
-    const role = client.guilds.cache.find(r => r.name == "Recruit");
-
-    await interaction.member.roles.add(role);
+      await interaction.member.roles.remove('1012888938056261662');//remove new role
+      await interaction.member.roles.remove('994276021304045648');//remove guest role
+      await interaction.member.roles.add('547517018140704785');//add recruit role
     }
-     //end
+
+    //end
     await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
   }
 
