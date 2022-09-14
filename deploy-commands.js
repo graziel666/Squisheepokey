@@ -5,7 +5,8 @@ const { clientId, guildId, token } = require('./config.json');
 const commands = [
   new SlashCommandBuilder().setName('report').setDescription('lets you report players that arent that squishee'),
   new SlashCommandBuilder().setName('cookie').setDescription('gives you a cookie'),
-  new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
+  new SlashCommandBuilder().setName('gameid').setDescription('let us know who you are in game!'),
+
 ]
   .map(command => command.toJSON());
 

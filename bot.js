@@ -26,6 +26,8 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
+    if (interaction.member.roles.cache.has('547895434316611653')){ return;}
+
   if (interaction.commandName === 'report') {
 
     // Create the modal
@@ -61,6 +63,41 @@ client.on('interactionCreate', async interaction => {
     await interaction.showModal(modal);
 
   }
+
+
+
+
+  if (interaction.commandName === 'gameid') {
+
+
+    // Create the modal
+    const idmodal = new ModalBuilder()
+      .setCustomId('idModal')
+      .setTitle('SquisheePokey');
+
+    // Add components to modal
+
+    // Create the text input components
+    const userId = new TextInputBuilder()
+      .setCustomId('UserId')
+      // The label is the prompt the user sees for this input
+      .setLabel("what's your in game id? example: Sverra.8026")
+      // Short means only a single line of text
+      .setStyle(TextInputStyle.Short);
+
+    // An action row only holds one text input,
+    // so you need one action row per text input.
+    const firstActionRow = new ActionRowBuilder().addComponents(userId);
+
+    // Add inputs to the modal
+    idmodal.addComponents(firstActionRow);
+
+    // Show the modal to the user
+    await interaction.showModal(idmodal);
+
+
+  }
+
   if (interaction.commandName === 'cookie') {
 
     const raccnom = client.emojis.cache.find(emoji => emoji.name === "cookienom03");
@@ -110,6 +147,40 @@ client.on('interactionCreate', async interaction => {
 
     await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
   }
+
+    if (interaction.customId === 'idModal') {
+     //getting user
+    const userID = interaction.user.id;
+
+    // Get the data entered by the user
+    const User_id = interaction.fields.getTextInputValue('UserId');
+
+    //with name
+    const in_game_id = `<@${userID}> is ${User_id} in game`;
+
+
+    //sneakies 1018223694922907808
+    //squishee 1018673990786613358
+    //squishee roster 1012897955176521778
+    const channel = client.channels.cache.get('1012897955176521778');
+    channel.send(in_game_id);
+
+
+    // if (newMember.roles.cache.some(role => role.name === 'Guest')) {
+    //     const role = interaction.options.getRole('Member');
+    //     //const member = interaction.options.getMember('target');
+    //     newMember.roles.add(role);
+
+    // }
+    if (interaction.member.roles.cache.some(r => r.name == "Guest")){
+    const role = client.guilds.cache.find(r => r.name == "Recruit");
+
+    await interaction.member.roles.add(role);
+    }
+     //end
+    await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
+  }
+
 });
 
 client.login(token);
