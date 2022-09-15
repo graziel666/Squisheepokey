@@ -27,7 +27,6 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
-  // if (interaction.member.roles.cache.has('1012888938056261662')) { return; }
 
   if (interaction.commandName === 'report') {
 
@@ -152,7 +151,8 @@ client.on('interactionCreate', async interaction => {
 
     //sneakies 1018223694922907808
     //squishee 1018673990786613358
-    const channel = client.channels.cache.get('1018673990786613358');
+    const report_channel = '1018673990786613358'
+    const channel = client.channels.cache.get(report_channel);
     channel.send(reported_user);
     channel.send(report_reason);
 
@@ -173,14 +173,18 @@ client.on('interactionCreate', async interaction => {
     //sneakies 1018223694922907808
     //squishee 1018673990786613358
     //squishee roster 1012897955176521778
-    const channel = client.channels.cache.get('1012897955176521778');
+    //mad-lab 1019959455649103912
+    const gameid_channel = '1012897955176521778';
+    const channel = client.channels.cache.get(gameid_channel);
     channel.send(in_game_id);
 
     //guest role 994276021304045648
     if (interaction.member.roles.cache.has('994276021304045648')) {
 
+      if (interaction.member.roles.cache.has('1012888938056261662')) {
+        await interaction.member.roles.remove('1012888938056261662');//remove new role
+      }
 
-      await interaction.member.roles.remove('1012888938056261662');//remove new role
       await interaction.member.roles.remove('994276021304045648');//remove guest role
       await interaction.member.roles.add('547517018140704785');//add recruit role
     }
@@ -188,6 +192,9 @@ client.on('interactionCreate', async interaction => {
     //end
     await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
   }
+
+
+
 
 });
 
