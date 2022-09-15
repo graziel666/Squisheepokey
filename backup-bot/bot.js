@@ -27,6 +27,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
+  // if (interaction.member.roles.cache.has('1012888938056261662')) { return; }
 
   if (interaction.commandName === 'report') {
 
@@ -85,10 +86,6 @@ client.on('interactionCreate', async interaction => {
         .setCustomId('UserId')
         // The label is the prompt the user sees for this input
         .setLabel("what's your in game id? example: Sverra.8026")
-        // set the maximum number of characters to allow
-	.setMaxLength(32)
-	// set the minimum number of characters required for submission
-	.setMinLength(8)
         // Short means only a single line of text
         .setStyle(TextInputStyle.Short);
 
@@ -118,13 +115,13 @@ client.on('interactionCreate', async interaction => {
     const raccnom = client.emojis.cache.find(emoji => emoji.name === "cookienom03");
 
     await interaction.reply('cookie coming in 3...');
-    await wait(1500);
+    await wait(2000);
     await interaction.editReply('2...');
-    await wait(1500);
+    await wait(2000);
     await interaction.editReply('1...');
-    await wait(1500);
+    await wait(2000);
     await interaction.editReply(':cookie:');
-    await wait(1000);
+    await wait(2000);
     await interaction.editReply(`${raccnom}`);
 
   }
@@ -155,8 +152,7 @@ client.on('interactionCreate', async interaction => {
 
     //sneakies 1018223694922907808
     //squishee 1018673990786613358
-    const report_channel = '1018673990786613358'
-    const channel = client.channels.cache.get(report_channel);
+    const channel = client.channels.cache.get('1018673990786613358');
     channel.send(reported_user);
     channel.send(report_reason);
 
@@ -177,31 +173,21 @@ client.on('interactionCreate', async interaction => {
     //sneakies 1018223694922907808
     //squishee 1018673990786613358
     //squishee roster 1012897955176521778
-    //mad-lab 1019959455649103912
-    const gameid_channel = '1012897955176521778';
-    const channel = client.channels.cache.get(gameid_channel);
+    const channel = client.channels.cache.get('1012897955176521778');
     channel.send(in_game_id);
 
     //guest role 994276021304045648
-    const new_role = '1012888938056261662'
-    const guest_role = '994276021304045648'
-    const recruit_role = '547517018140704785'
-    if (interaction.member.roles.cache.has(guest_role)) {
+    if (interaction.member.roles.cache.has('994276021304045648')) {
 
-      if (interaction.member.roles.cache.has(new_role)) {
-        await interaction.member.roles.remove(new_role);//remove new role
-      }
 
-      await interaction.member.roles.remove(guest_role);//remove guest role
-      await interaction.member.roles.add(recruit_role);//add recruit role
+      await interaction.member.roles.remove('1012888938056261662');//remove new role
+      await interaction.member.roles.remove('994276021304045648');//remove guest role
+      await interaction.member.roles.add('547517018140704785');//add recruit role
     }
 
     //end
     await interaction.reply({ content: 'Your submission was received successfully!', ephemeral: true });
   }
-
-
-
 
 });
 
